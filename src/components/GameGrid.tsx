@@ -1,0 +1,37 @@
+import { Text } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import apiClient from "../services/api-client";
+
+interface Game {
+  id: number;
+  name: string;
+}
+interface FetchGamesResponse {
+  count: number;
+  results: Game[];
+}
+const GameGrid = () => {
+  const [games, setGames] = useState<Game[]>([]);
+  const [error, setError] = useState("");
+  useEffect(() => {
+    apiClient
+      .get<FetchGamesResponse>("/game s")
+      .then((res) => setGames(res.data.results))
+      .catch((err) => setError(err.message));
+  });
+  return (
+    <>
+      {error && <Text>{error}</Text>}
+      <ul>
+        {games.map((game) => (
+          <li key={game.id}>{game.name}</li>
+        ))}
+      </ul>
+    </>
+  );
+};
+
+export default GameGrid;
+function UseEffect(arg0: () => void) {
+  throw new Error("Function not implemented.");
+}
